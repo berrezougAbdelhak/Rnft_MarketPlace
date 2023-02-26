@@ -1,0 +1,17 @@
+{
+    "attributes":[
+        {
+            "trait_type":"Color",
+
+            "value":"Black"
+        },
+        {
+            "trait_type":"Type",
+
+            "value":"Text"
+        }
+    ],
+    "description":"Rnft to test MarketPlace ",
+    "image":"https://rnft.infura-ipfs.io/ipfs/QmaB4a4rjbgMGu5623ktooV3Gdy2v5q8mi5RMhkhuJMag2",
+    "name":"Rnft ---NFT--- "
+}
