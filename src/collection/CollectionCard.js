@@ -8,6 +8,7 @@ function CollectionCard({
   symbol,
   approved = false,
   putForSale = () => {},
+  openDialog
 }) {
   return (
     <Box
@@ -74,6 +75,7 @@ function CollectionCard({
         <Button
           variant="contained"
           sx={{ color: "white", bgcolor: "primary.main", mt: 2 }}
+          onClick={openDialog}
         >
           Authorization for reproductions
         </Button>
