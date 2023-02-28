@@ -7,7 +7,7 @@ function NavBar() {
   return (
     <Box
       sx={{
-        fontFamily: "Lato",
+        
         fontSize: "20px",
         display: "flex",
         fontWeight: "700",
