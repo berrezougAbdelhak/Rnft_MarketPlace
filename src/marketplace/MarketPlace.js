@@ -32,7 +32,7 @@ function MarketPlace() {
     );
   };
   const getNftInfo = async () => {
-    const accounts = await provider.send("eth_requestAccounts", []);
+    const account = await provider.send("eth_requestAccounts", []);
 
     let name = await nftContract.name();
     let symbol = await nftContract.symbol();
@@ -51,9 +51,12 @@ function MarketPlace() {
       const idItem = parseInt(item.id._hex);
       const price = parseInt(item.price);
       const uri = await nftContract.tokenURI(tokenId);
+      const owner = await nftContract.ownerOf(tokenId);
+      if (owner.toLowerCase() !== account[0].toLowerCase()) {
+        const imageUri = await (await axios.get(uri)).data.image;
+        dataTemp.push([tokenId, imageUri, name, symbol, price, idItem]);
 
-      const imageUri = await (await axios.get(uri)).data.image;
-      dataTemp.push([tokenId, imageUri, name, symbol, price, idItem]);
+      }
     }
     // console.log("Data temp",dataTemp)
     // console.log("token Id",parseInt(dataTemp[0].tokenId._hex))
