@@ -12,35 +12,20 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { ethers } from "ethers";
-import nft_abi from "../contract/NFT_abi.json";
-import marketplace_abi from "../contract/Market_abi.json";
-import axios from "axios";
-import CollectionCard from "./CollectionCard";
+import CollectionCard from "./collectionCard";
+import { nftContract,addressNFT } from "../contract/NFT";
+import { marketPlaceContract,addressMarketPlace } from "../contract/MarketPlaceContract";
+import UseNft from "../customHooks/UseNft";
 function Collection() {
-  const [imageUrl, setImageUrl] = useState();
   const [data, setData] = useState([[]]);
-  const [accounts, setAccounts] = useState();
   const [openDialog, setOpenDialog] = useState(false);
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
-  const nftContract = new ethers.Contract(
-    "0xa214075B21e5A66Cf98bCbd77cF653D7247CA861",
-    nft_abi,
-    signer
-  );
-  const marketPlaceContract = new ethers.Contract(
-    "0x7EB8ebB70ec973E1bBB6cbA76EB9D219880BB59b",
-    marketplace_abi,
-    signer
-  );
   const putForSale = async (tokenId) => {
     await nftContract.approve(
-      "0x7EB8ebB70ec973E1bBB6cbA76EB9D219880BB59b",
+      addressMarketPlace,
       tokenId
     );
     await marketPlaceContract.createMarketItem(
-      "0xa214075B21e5A66Cf98bCbd77cF653D7247CA861",
+      addressNFT,
       tokenId,
       100,
       { value: 10 }
@@ -55,27 +40,8 @@ function Collection() {
   }, []);
 
   const getNftInfo = async () => {
-    const account = await provider.send("eth_requestAccounts", []);
-    setAccounts(account);
-    let name = await nftContract.name();
-    let symbol = await nftContract.symbol();
-    let totalSupply = await nftContract.totalSupply();
-    totalSupply = parseInt(totalSupply._hex);
-    const approved = await nftContract.getApproved(1);
-    let dataTemp = [];
-    for (let i = 1; i <= totalSupply; i++) {
-      const owner = await nftContract.ownerOf(i);
-      if (owner.toLowerCase() === account[0].toLowerCase()) {
-        console.log("owner==account");
-        const uri = await nftContract.tokenURI(i);
-        const imageUri = await (await axios.get(uri)).data.image;
-        console.log("Image uri", imageUri);
-        const approved = await nftContract.getApproved(i);
-        const tokenId = i;
-        dataTemp.push([i, imageUri, name, symbol, approved, tokenId]);
-      }
-    }
-
+    const dataTemp= await UseNft(nftContract)
+  
     setData(dataTemp);
   };
   const [tokenReproduction, setTokenReproduction] = useState("");

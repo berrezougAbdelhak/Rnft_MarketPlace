@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
-
+import { styles } from "./CollectionCard.styles";
+import { addressMarketPlace } from "../../contract/MarketPlaceContract";
 function CollectionCard({
   tokenId,
   image,
@@ -12,46 +13,23 @@ function CollectionCard({
 }) {
   return (
     <Box
-      sx={{
-        p: 1,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        borderRadius: 4,
-        boxShadow: "0px 4px 6px 1px rgba(0,0,0,0.2)",
-        my: 2,
-        minHeight: "90%",
-      }}
+      sx={styles.container}
     >
       <Box
-        sx={{
-          borderTopRightRadius: 20,
-          borderBottomLeftRadius: 20,
-          overflow: "hidden",
-          maxWidth: "90%",
-          mb: 1,
-        }}
+        sx={styles.imageContainer}
       >
-        <Box width={"300px"} height="200px">
           <img
             alt="NFt image"
             src={image}
             width={"100%"}
-            height={"100%"}
+            height={"200px"}
             style={{ objectFit: "contain" }}
           />
-        </Box>
       </Box>
       <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          fontSize: "20px",
-        }}
+        sx={styles.descriptionContainer}
       >
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={styles.infoContainer}>
           <Typography fontWeight={"700"}>{name}</Typography>
           <Typography fontWeight={"700"}>{symbol}</Typography>
         </Box>
@@ -63,7 +41,7 @@ function CollectionCard({
         </Box>
       </Box>
 
-      {approved === "0x0000000000000000000000000000000000000000" ? (
+      {approved !== addressMarketPlace ? (
         <Button
           variant="outlined"
           sx={{ mt: 2 }}
